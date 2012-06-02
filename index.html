@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<title>Nick Veenhof | Master Thesis Presentation</title>
+
+	<meta name="description" content="Master thesis presentation by Nick Veenhof">
+	<meta name="author" content="Nick Veenhof" />
+	<meta name="viewport" content="width=device-width, maximum-scale=1.0, initial-scale=1.0, user-scalable=yes" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<link href="master.css" rel="stylesheet" type="text/css" />
+	<link href="basic-animations.min.css" rel="stylesheet" type="text/css" />
+
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+	<script type="text/javascript" src="js/jmpress.all.min.js"></script>
+	<script type="text/javascript">
+	$(function() {
+		$.jmpress("template", "rotation", {
+			children: function(idx) {
+				return {r: 250, phi: idx*40, rotateY: idx*40, scale: 0.2, rotateX: 90}
+			}
+		});
+		$.jmpress("template", "main", {
+			children: [
+				{},
+				{x: 1000, rotate: 0},
+				{x: 2000, rotate: 90},
+				{x: 3000, rotate: 0},
+        {x: 4000, rotate: 90},
+        {x: 5000, rotate: 0},
+        {x: 6000, rotate: 90},
+        {x: 7000, rotate: 0},
+        {x: 8000, rotate: 90},
+        {x: 9000, rotate: 0}]
+		});
+		$('article').jmpress({
+			stepSelector: "section",
+			viewPort: {
+				height: 500,
+				width: 1000,
+				maxScale: 1
+			}
+		});
+	});
+  $('article').jmpress("route", ".basic");
+	$('article').jmpress("route", ".anilib");
+	</script>
+</head>
+<body>
+
+<article data-template="main">
+	<section id="start">
+		<h1>Drupal Dev Days</h1>
+		<p>Drupal Search and Solr Wizardry</p>
+    <p>&nbsp;</p>
+    <img src="images/druplicon.png" height="100px" />
+    <img src="images/solr_logo_rgb.png" height="100px" />
+    <p class="small-text">
+      <em>Matthias Hutterer</em><br/>
+      <em>Nick Veenhof</em><br/>
+    </p>
+	</section>
+	<section id="introduction" data-template="rotation">
+		<h1 class="title">&nbsp;Introduction&nbsp;</h1>
+    <section>
+      <img src="images/wordcloud.png" height="450px"/>
+    </section>
+		<section>
+			<h2 style="margin-bottom:-10px">Nick Veenhof</h2>
+      <div style="text-align:center; width:50%; margin: 0 auto;">
+      <p style="float:left; margin-top: 70px"><a href="http://www.twitter.com/nick_vh">@nick_vh</a></p>
+      <p style="float:left; margin-left:100px;"><img src="images/nick.png" height="100px"/></p>
+      <p style="clear:both;"/>
+      </div>
+      <p class="small-text"><a href="http://www.nickveenhof.be" target="_blank">http://www.nickveenhof.be</a></p>
+      <p class="small-text"><a href="https://github.com/nickveenhof/msc_solr_drupal/">https://github.com/nickveenhof/msc_solr_drupal/</a></p>
+      <p>
+        <img src="images/KAHO_grootlogo.gif" height="100px"/>
+        <img src="images/logoUPC.gif" height="100px"/>
+        <img src="images/logo-front.png" height="100px"/>
+        <img src="images/ateneatech_0.png" height="100px"/>
+        <img src="images/logo_atsistemas_620x220.png" height="100px"/>
+      </p></section>
+		<section>
+			<h3>Apache Solr</h3>
+      <ul>
+        <li>Open Source Enterprise Search Platform</li>
+        <li>Apache Foundation</li>
+        <li>Full-text search, highlighting, faceted search, clustering, rich document handling</li>
+        <li>Distributed</li>
+        <li>Replication/scalable</li>
+        <li>Java</li>
+        <li>REST HTTP and answers in XML/JSON and some others</li>
+        <li>Not Relational</li>
+      </ul>
+		</section>
+	</section>
+	<section id="exploration" data-template="rotation">
+		<h1 class="title">&nbsp;Exploration&nbsp;</h1>
+		<section>
+			<h3>Standard Drupal Search</h3>
+      <div>
+        <div>
+          <span style="margin-left:50px">cron.php</span><span style="margin-left:75px">Indexing process</span>
+        </div>
+        <img src="images/repo/32093999.png" height="100px"/><span>sends to</span><img src="images/repo/32094069.png" height="100px"/>
+      </div>
+      <div style="clear:both"></div>
+      <div  data-jmpress="fade" style="float:left; width:50%">
+      <h4>Advantages</h4>
+      <ul>
+        <li>HTML tag scores</li>
+        <li>Accent Removal</li>
+        <li>Stemming</li>
+      </ul>
+      </div>
+      <div  data-jmpress="fade" style="float:right; width:50%">
+      <h4>Disadvantages</h4>
+      <ul>
+        <li>SQL not optimized to search, slow for big datasets</li>
+        <li>Limited operators</li>
+        <li>Not scalable/not dedicated for search</li>
+      </ul>
+      </div>
+      <div style="clear:both"></div>
+    </section>
+	<section>
+	  <h3>Apache Solr</h3>
+      <div style="clear:both"></div>
+      <div data-jmpress="fade" style="float:left; width:50%">
+      <h4>Advantages</h4>
+      <ul>
+        <li>Blazingly Fast</li>
+        <li>Loads of extra features (facets, correction, ...)</li>
+        <li>Stemming of (almost) any language</li>
+        <li>Text extraction from documents with Tika</li>
+      </ul>
+      </div>
+      <div data-jmpress="fade" style="float:right; width:50%">
+      <h4>Disadvantages</h4>
+      <ul>
+        <li>Separate server + Java</li>
+        <li>Comes with no authentication</li>
+        <li>Not a one-step process</li>
+      </ul>
+      </div>
+      <div style="clear:both"></div>
+    </section>
+    <section>
+	<h3>Facet Api</h3>
+      <ul>
+        <li>General Faceted Search API</li>
+        <li>Multiple modules support it</li>
+        <li>Only Drupal 7</li>
+      </ul>
+	</section>
+  </section>
+  <section id="improvements" data-template="rotation">
+    <h1 class="title">Improvements needed</h1>
+    <section>
+      <div class="outer">
+        <div data-jmpress="fade" class="inner">
+          <img src="images/apachesolr_ui_backend_september_2011_1.png" width="600px"/>
+        </div>
+        <div data-jmpress="fade" class="inner">
+          <img src="images/apachesolr_ui_backend_september_2011_2.png" width="600px"/>
+        </div>
+        <div data-jmpress="fade" class="inner">
+          <img src="images/apachesolr_ui_backend_september_2011_3.png" width="500px"/>
+        </div>
+        <div data-jmpress="fade" class="inner">
+          <img src="images/apachesolr_ui_backend_september_2011_4.png" width="450px"/>
+        </div>
+      </div>
+    </section>
+		<section>
+      <h3>Apache Solr</h3>
+      <ul>
+        <li>UI refactoring</li>
+        <li>Multi entity support</li>
+        <li>From global to context driven</li>
+        <li>Get rid of core search dependency</li>
+        <li>Performance</li>
+        <li>Access control</li>
+        <li>De-duplication of code</li>
+        <li>Automatic Testing</li>
+        <li>Backport</li>
+        <li>...</li>
+      </ul>
+    </section>
+    <section>
+      <h3>Facet Api</h3>
+      <img src="images/facetapi_ui_september_2011.png" width="600px"/>
+      <ul>
+        <li>Improve data handling/facets</li>
+        <li>Configuration import</li>
+        <li>Widget problems</li>
+        <li>backport</li>
+        <li>...</li>
+      </ul>
+    </section>
+  </section>
+  <section id="Communication" data-template="rotation">
+		<h1 class="title">&nbsp;Implementation&nbsp;</h1>
+		<section>
+			<h3>Drupal Camps and Seminars</h3>
+      <div style="clear:both"></div>
+      <div style="float:left; width:50%">
+      <ul class="small-text">
+        <li data-jmpress="fade" style="margin-bottom:30px"><a href="http://drupal.be/evenement/dug-drupal-user-group-meeting-over-search-in-drupal-7">Drupal user Group Belgium</a>
+          <ul>
+            <li>9th of November</li>
+            <li>60+ people</li>
+            <li>Very good feedback</li>
+            <li>Struggled with Dutch!</li>
+          </ul>
+        </li>
+        <li data-jmpress="fade"><a href="http://toulouse2011.drupalcamp.fr/en">Drupal Camp Toulouse</a>
+          <ul>
+            <li>26th of November - 27th of November</li>
+            <li>100+ people</li>
+            <li>Language barrier</li>
+            <li>More in depth Solr</li>
+          </ul>
+        </li>
+      </ul>
+      </div>
+      <div style="float:right; width:50%">
+      <ul class="small-text">
+        <li data-jmpress="fade" style="margin-bottom:35px">Internal Training
+          <ul>
+            <li>9th of December</li>
+            <li>20+ people</li>
+            <li>No visual contact with the audience</li>
+          </ul>
+        </li>
+        <li data-jmpress="fade"><a href="http://www.drupalsciencecamp.org.uk/sessions/drupal-search-and-solr-wizardry">Drupal Science Camp Cambridge</a>
+          <ul>
+            <li>21st of January - 22nd of January</li>
+            <li>200+ people (40+ in the room)</li>
+            <li>More Solr developers!</li>
+            <li>Amazing questions and confidence boost</li>
+          </ul>
+        </li>
+      </ul>
+      <div style="clear:both"></div>
+		</section>
+    <section>
+			<h3>Blog Posts</h3>
+      <ul class="small-text">
+        <li>Using Github application in your patch workflow</li>
+        <li>Attending the Boston Drupal User Group</li>
+        <li>Changing a git commit message in the commit history</li>
+        <li>A story of an intern at Acquia</li>
+        <li>Adding a custom plugin to Solr</li>
+        <li>A simple guide to install Apache Solr 3.x for Drupal 7</li>
+        <li>Slides of the Drupal Search and Solr sessions</li>
+        <li>Upgrading from Apache Solr 1.4 to Apache Solr 3.5 and its implications</li>
+      </ul>
+      <p data-jmpress="fade">Over 20.000 page views!</p>
+		</section>
+	</section>
+  <section id="implementation" data-template="rotation">
+		<h1 class="title">&nbsp;Implementation&nbsp;</h1>
+		<section>
+      <div style="font-size:5em; margin-top: 150px" ><a href="http://apachesolrissues.dev" target="blank">Demo</a></div>
+    </section>
+		<section>
+			<h3>Backporting both modules</h3>
+      <img src="images/backport+usage.png" width="600px"/>
+		</section>
+		<section>
+			<h3>Backport Challenges</h3>
+      <ul>
+        <li>DBTNG to MySQL</li>
+        <li>Autoload</li>
+        <li>Static variables</li>
+        <li>Theming layer</li>
+        <li>Multi entity to single entity</li>
+        <li>Non-existing Drupal 7 functions</li>
+        <li>...</li>
+      </ul>
+		</section>
+    <section>
+			<h3>Performance testing Acquia Search</h3>
+      <ul>
+        <li>MergePolicies
+          <ul>
+            <li>LogByteSizeMergePolicy (1.4)</li>
+            <li>LogDocMergePolicy (1.4)</li>
+            <li>TieredMergePolicy (3.x)</li>
+          </ul>
+        </li>
+        <li>Jmeter</li>
+        <li>Apache Access Logs</li>
+      </ul>
+		</section>
+    <section>
+			<h3>Performance Graphs (Buytaert.net)</h3>
+      <img src="images/implementation/small-speed.jpg" width="550px"/>
+		</section>
+    <section>
+			<h3>Performance Graphs</h3>
+      <img src="images/implementation/big-speed.jpg" width="550px"/>
+		</section>
+    <section>
+			<h3>Performance conclusions</h3>
+      <ul>
+        <li data-jmpress="fade">Keep LogByteMergePolicy with factor 4</li>
+        <li data-jmpress="fade">TieredMergePolicy very interesting. Completely different</li>
+        <li data-jmpress="fade">Solr 3.5 faster than Solr 1.4.1</li>
+        <li data-jmpress="fade">Don't rely on default settings</li>
+        <li data-jmpress="fade">Set Lucene version explicitly</li>
+      </ul>
+		</section>
+    <section>
+			<h3>Additional modules</h3>
+      <ul>
+        <li>Facet Api Slider</li>
+        <li>Apache Solr Term</li>
+        <li>Apache Solr Commerce</li>
+        <li>Apache Solr User</li>
+        <li>Apache Solr Multi Site Search (6.x - 7.x)</li>
+        <li>Apache Solr Sort UI</li>
+      </ul>
+		</section>
+	</section>
+  <section id="conclusion" data-template="rotation">
+		<h1 class="title">&nbsp;Conclusion&nbsp;</h1>
+		<section>
+			<h3>Achievements</h3>
+      <ul>
+        <li data-jmpress="fade after 1s">+1000 hours of work</li>
+        <li data-jmpress="fade after 1s">10000+ users of the project</li>
+        <li data-jmpress="fade after 1s">Drupal 7 module usage doubled</li>
+      </ul>
+    </section>
+  </section>
+  <section id="questions">
+		<h1 class="title">&nbsp;Questions?&nbsp;</h1>
+    <h3>Thanks for your attention!</h3>
+	</section>
+</article>
+</body>
+</html>
