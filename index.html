@@ -32,7 +32,10 @@
             {x: 6000, rotate: 90},
             {x: 7000, rotate: 0},
             {x: 8000, rotate: 90},
-            {x: 9000, rotate: 0}]
+            {x: 9000, rotate: 0},
+            {x: 10000, rotate: 90},
+            {x: 11000, rotate: 0}
+          ]
         });
         $('article').jmpress({
           stepSelector: "section",
@@ -109,7 +112,7 @@
           </ul>
         </section>
       </section>
-      <section id="exploration" data-template="rotation">
+      <section id="drupal-to-solr" data-template="rotation">
         <h1 class="title">Drupal to Solr</h1>
         <section>
           <h3>How does a solr search work?</h3>
@@ -119,9 +122,8 @@
           <h3>How can I create my own Query object?</h3>
           New query object and how to make a query + using the fq/fl's
         </section>
-
       </section>
-      <section id="exploration" data-template="rotation">
+      <section id="solr-internals" data-template="rotation">
         <h1 class="title">Solr internals</h1>
         <section>
           <h3>What do all these FQ, FL, FQ. mean?</h3>
@@ -148,140 +150,12 @@
           Tell about architecture and HA/Multi-region
         </section>
         <section>
-          <h3>How fast is Solr with Drupal?</h3>
-          Show benchmarks
-        </section>
-        <section>
           <h3>How can I monitor my Solr?</h3>
           New Relic + mbeans (nagios, ...)
         </section>
       </section>
-      <section id="improvements" data-template="rotation">
-        <h1 class="title">Improvements needed</h1>
-        <section>
-          <div class="outer">
-            <div data-jmpress="fade" class="inner">
-              <img src="images/apachesolr_ui_backend_september_2011_1.png" width="600px"/>
-            </div>
-            <div data-jmpress="fade" class="inner">
-              <img src="images/apachesolr_ui_backend_september_2011_2.png" width="600px"/>
-            </div>
-            <div data-jmpress="fade" class="inner">
-              <img src="images/apachesolr_ui_backend_september_2011_3.png" width="500px"/>
-            </div>
-            <div data-jmpress="fade" class="inner">
-              <img src="images/apachesolr_ui_backend_september_2011_4.png" width="450px"/>
-            </div>
-          </div>
-        </section>
-        <section>
-          <h3>Apache Solr</h3>
-          <ul>
-            <li>UI refactoring</li>
-            <li>Multi entity support</li>
-            <li>From global to context driven</li>
-            <li>Get rid of core search dependency</li>
-            <li>Performance</li>
-            <li>Access control</li>
-            <li>De-duplication of code</li>
-            <li>Automatic Testing</li>
-            <li>Backport</li>
-            <li>...</li>
-          </ul>
-        </section>
-        <section>
-          <h3>Facet Api</h3>
-          <img src="images/facetapi_ui_september_2011.png" width="600px"/>
-          <ul>
-            <li>Improve data handling/facets</li>
-            <li>Configuration import</li>
-            <li>Widget problems</li>
-            <li>backport</li>
-            <li>...</li>
-          </ul>
-        </section>
-      </section>
-      <section id="Communication" data-template="rotation">
-        <h1 class="title">&nbsp;Implementation&nbsp;</h1>
-        <section>
-          <h3>Drupal Camps and Seminars</h3>
-          <div style="clear:both"></div>
-          <div style="float:left; width:50%">
-            <ul class="small-text">
-              <li data-jmpress="fade" style="margin-bottom:30px"><a href="http://drupal.be/evenement/dug-drupal-user-group-meeting-over-search-in-drupal-7">Drupal user Group Belgium</a>
-                <ul>
-                  <li>9th of November</li>
-                  <li>60+ people</li>
-                  <li>Very good feedback</li>
-                  <li>Struggled with Dutch!</li>
-                </ul>
-              </li>
-              <li data-jmpress="fade"><a href="http://toulouse2011.drupalcamp.fr/en">Drupal Camp Toulouse</a>
-                <ul>
-                  <li>26th of November - 27th of November</li>
-                  <li>100+ people</li>
-                  <li>Language barrier</li>
-                  <li>More in depth Solr</li>
-                </ul>
-              </li>
-            </ul>
-          </div>
-          <div style="float:right; width:50%">
-            <ul class="small-text">
-              <li data-jmpress="fade" style="margin-bottom:35px">Internal Training
-                <ul>
-                  <li>9th of December</li>
-                  <li>20+ people</li>
-                  <li>No visual contact with the audience</li>
-                </ul>
-              </li>
-              <li data-jmpress="fade"><a href="http://www.drupalsciencecamp.org.uk/sessions/drupal-search-and-solr-wizardry">Drupal Science Camp Cambridge</a>
-                <ul>
-                  <li>21st of January - 22nd of January</li>
-                  <li>200+ people (40+ in the room)</li>
-                  <li>More Solr developers!</li>
-                  <li>Amazing questions and confidence boost</li>
-                </ul>
-              </li>
-            </ul>
-            <div style="clear:both"></div>
-        </section>
-        <section>
-          <h3>Blog Posts</h3>
-          <ul class="small-text">
-            <li>Using Github application in your patch workflow</li>
-            <li>Attending the Boston Drupal User Group</li>
-            <li>Changing a git commit message in the commit history</li>
-            <li>A story of an intern at Acquia</li>
-            <li>Adding a custom plugin to Solr</li>
-            <li>A simple guide to install Apache Solr 3.x for Drupal 7</li>
-            <li>Slides of the Drupal Search and Solr sessions</li>
-            <li>Upgrading from Apache Solr 1.4 to Apache Solr 3.5 and its implications</li>
-          </ul>
-          <p data-jmpress="fade">Over 20.000 page views!</p>
-        </section>
-      </section>
-      <section id="implementation" data-template="rotation">
-        <h1 class="title">&nbsp;Implementation&nbsp;</h1>
-        <section>
-          <div style="font-size:5em; margin-top: 150px" ><a href="http://apachesolrissues.dev" target="blank">Demo</a></div>
-        </section>
-        <section>
-          <h3>Backporting both modules</h3>
-          <img src="images/backport+usage.png" width="600px"/>
-        </section>
-        <section>
-          <h3>Backport Challenges</h3>
-          <ul>
-            <li>DBTNG to MySQL</li>
-            <li>Autoload</li>
-            <li>Static variables</li>
-            <li>Theming layer</li>
-            <li>Multi entity to single entity</li>
-            <li>Non-existing Drupal 7 functions</li>
-            <li>...</li>
-          </ul>
-        </section>
+      <section id="solr-performance" data-template="rotation">
+        <h1 class="title">Performance &AMP; Drupal</h1>
         <section>
           <h3>Performance testing Acquia Search</h3>
           <ul>
@@ -314,27 +188,120 @@
             <li data-jmpress="fade">Set Lucene version explicitly</li>
           </ul>
         </section>
+      </section>
+      <section id="improvements" data-template="rotation">
+        <h1 class="title">This needed to be done...&nbsp;&nbsp;&nbsp;</h1>
         <section>
-          <h3>Additional modules</h3>
+          <div class="outer">
+            <div class="inner">
+              <img src="images/apachesolr_ui_backend_september_2011_1.png" width="600px"/>
+            </div>
+            <div data-jmpress="fade" class="inner">
+              <img src="images/apachesolr_ui_backend_september_2011_2.png" width="600px"/>
+            </div>
+            <div data-jmpress="fade" class="inner">
+              <img src="images/apachesolr_ui_backend_september_2011_3.png" width="500px"/>
+            </div>
+            <div data-jmpress="fade" class="inner">
+              <img src="images/apachesolr_ui_backend_september_2011_4.png" width="450px"/>
+            </div>
+          </div>
+        </section>
+        <section>
+          <h3>Apache Solr</h3>
           <ul>
-            <li>Facet Api Slider</li>
-            <li>Apache Solr Term</li>
-            <li>Apache Solr Commerce</li>
-            <li>Apache Solr User</li>
-            <li>Apache Solr Multi Site Search (6.x - 7.x)</li>
-            <li>Apache Solr Sort UI</li>
+            <li>UI refactoring</li>
+            <li>Multi entity support</li>
+            <li>From global to context driven</li>
+            <li>Get rid of core search dependency</li>
+            <li>Performance</li>
+            <li>Access control</li>
+            <li>De-duplication of code</li>
+            <li>Automatic Testing (503 tests)</li>
+            <li>Backport to 6.x-3.x</li>
+            <li>...</li>
           </ul>
         </section>
       </section>
-      <section id="conclusion" data-template="rotation">
-        <h1 class="title">&nbsp;Conclusion&nbsp;</h1>
+      <section id="click-recipes-apachesolr" data-template="rotation">
+        <h1 class="title">&nbsp;Click Recipes Apachesolr&nbsp;</h1>
         <section>
-          <h3>Achievements</h3>
-          <ul>
-            <li data-jmpress="fade after 1s">+1000 hours of work</li>
-            <li data-jmpress="fade after 1s">10000+ users of the project</li>
-            <li data-jmpress="fade after 1s">Drupal 7 module usage doubled</li>
-          </ul>
+          <h3>How to create a Range facet</h3>
+        </section>
+        <section>
+          <h3>How to index locations</h3>
+        </section>
+        <section>
+          <h3>How to index attachments</h3>
+        </section>
+        <section>
+          <h3>How to have a common index between Drupal 6 and 7</h3>
+        </section>
+        <section>
+          <h3>How to theme your search results (1)</h3>
+        </section>
+        <section>
+          <h3>How to theme your search results (2)</h3>
+        </section>
+        <section>
+          <h3>How to create advanced search form</h3>
+        </section>
+        <section>
+          <h3>How to use Solr with views</h3>
+        </section>
+        <section>
+          <h3>Entity support</h3>
+        </section>
+      </section>
+      <section id="code-recipes-apachesolr" data-template="rotation">
+        <h1 class="title">&nbsp;Code Recipes Apachesolr&nbsp;</h1>
+        <section>
+          <h3>How to sort on a custom field</h3>
+        </section>
+        <section>
+          <h3>How to enforce that specific sort</h3>
+        </section>
+        <section>
+          <h3>What is this thing with multiple fields?</h3>
+        </section>
+        <section>
+          <h3>How to index your own entity</h3>
+        </section>
+        <section>
+          <h3>Why are my text fields not showing up as facets?</h3>
+        </section>
+        <section>
+          <h3>How to override breadcrumbs in a specific search page</h3>
+        </section>
+        <section>
+          <h3>How to exclude specific nodes from indexing</h3>
+        </section>
+        <section>
+          <h3>How can I reduce the http request when using thumbnails</h3>
+        </section>
+      </section>
+      <section id="click-recipes-search-api" data-template="rotation">
+        <h1 class="title">&nbsp;Click Recipes Search Api&nbsp;</h1>
+        <section>
+          <h3>How to ...</h3>
+        </section>
+      </section>
+      <section id="code-recipes-search-api" data-template="rotation">
+        <h1 class="title">&nbsp;Code Recipes Search Api Solr&nbsp;</h1>
+        <section>
+          <h3>How to ...</h3>
+        </section>
+      </section>
+      <section id="future" data-template="rotation">
+        <h1 class="title">&nbsp;Future of Solr Search&nbsp;</h1>
+        <section>
+          <h3>Apache Solr Search</h3>
+        </section>
+        <section>
+          <h3>Search Api Solr</h3>
+        </section>
+        <section>
+          <h3>Globally</h3>
         </section>
       </section>
       <section id="questions">
