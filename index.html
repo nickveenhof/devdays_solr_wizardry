@@ -8,54 +8,23 @@
     <meta name="author" content="Nick Veenhof" />
     <meta name="viewport" content="width=device-width, maximum-scale=1.0, initial-scale=1.0, user-scalable=yes" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <link href="master.css" rel="stylesheet" type="text/css" />
-    <link href="basic-animations.min.css" rel="stylesheet" type="text/css" />
-
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript" src="js/syntax/jquery.syntax.min.js" ></script>
+    <script type="text/javascript" src="js/stats.js"></script>
     <script type="text/javascript" src="js/jmpress.all.min.js"></script>
-    <!--<script type="text/javascript" src="js/jmpress.presentation-mode.min.js"></script>-->
+    <script type="text/javascript" src="js/jmpress.start.js"></script>
     <script type="text/javascript">
-      $(function() {
-        $.jmpress("template", "rotation", {
-          children: function(idx) {
-            return {r: 250, phi: idx*40, rotateY: idx*40, scale: 0.2, rotateX: 90}
-          }
-        });
-        $.jmpress("template", "main", {
-          children: [
-            {},
-            {x: 1000, rotate: 0},
-            {x: 2000, rotate: 90},
-            {x: 3000, rotate: 0},
-            {x: 4000, rotate: 90},
-            {x: 5000, rotate: 0},
-            {x: 6000, rotate: 90},
-            {x: 7000, rotate: 0},
-            {x: 8000, rotate: 90},
-            {x: 9000, rotate: 0},
-            {x: 10000, rotate: 90},
-            {x: 11000, rotate: 0}
-          ]
-        });
-        $('article').jmpress({
-          stepSelector: "section",
-          viewPort: {
-            height: 500,
-            width: 1000,
-            maxScale: 1
-          },
-          presentationMode: {
-            url: "presentation-screen.html",
-            notesUrl: "notes.html"
-          }
-        });
+      // This function is executed when the page has finished loading.
+      jQuery(function($) {
+        // This function highlights (by default) pre and code tags which are annotated correctly.
+        $.syntax();
       });
-      $('article').jmpress("route", ".basic");
-      $('article').jmpress("route", ".anilib");
-    </script>
+   </script>
+   <link href="basic-animations.min.css" rel="stylesheet" type="text/css" />
+   <link href="master.css" rel="stylesheet" type="text/css" />
   </head>
   <body>
-
     <article data-template="main">
       <section id="start">
         <h1>Drupal Dev Days</h1>
@@ -94,7 +63,7 @@
         <section>
           <h2 style="margin-bottom:-10px">Matthias Hutterer</h2>
           <div style="text-align:center; width:50%; margin: 0 auto;">
-            <p style="clear:both;"/>
+            <p style="clear:both;"></p>
           </div>
           <p class="small-text"><a href="http://drupal.org/user/59747" target="_blank">mh86 @ Drupal.org</a></p>
         </section>
@@ -116,18 +85,107 @@
         <h1 class="title">Drupal to Solr</h1>
         <section>
           <h3>How does a solr search work?</h3>
-          Image of a solr request
+          <div style="height:450px; overflow:auto;">
+            <img src="images/query_tale.png"/>
+          </div>
         </section>
         <section>
           <h3>How can I create my own Query object?</h3>
-          New query object and how to make a query + using the fq/fl's
+          New query object and how to make a query + using the fq/filters
+
+          <pre class="syntax php-script">
+$solr = apachesolr_get_solr();
+$query = apachesolr_drupal_query("custom", array('q' => 'mykeys'), 'sort_label asc', 'search/path');
+$query->setSolrsort('sort_name', 'desc');
+$query->addFilter('bundle', (article OR page));
+$query->removeFilter('bundle');
+$query->addParam('fq', "bundle:(article OR page)");
+$query->addParam('fq', "field_date:[1970-12-31T23:59:59Z TO NOW]");
+// Tricky one...
+$query->removeParam('fq');
+$subquery = apachesolr_drupal_subquery();
+$subquery->addFilter('hash', randomhash);
+$query->addFilterSubQuery($subquery);
+$resp = $query->search();
+
+if ($resp->response) {
+  // Do something with results
+}
+            </pre>
         </section>
       </section>
       <section id="solr-internals" data-template="rotation">
         <h1 class="title">Solr internals</h1>
         <section>
-          <h3>What do all these FQ, FL, FQ. mean?</h3>
-          FQ, QF, FL, ...
+          <h3>What do all these FQ, FL. params mean?</h3>
+          <ul>
+            <li>
+              Query (q)
+              <br/><code class="syntax">select/?q=Superhero</code>
+            </li>
+            <li>
+              sort, start, rows
+              <br/><code class="syntax">select/?q=Superhero&start=0&rows=10&sort=sort_name+asc</code>
+              <br/><span class="smaller-text">*Can sort on integers, but for strings you need to use sort_yourfield</span>
+            </li>
+            <li>
+              Filter Query (fq)
+              <br/><code class="syntax">select/?q=Superhero&fq=bundle:persons&fq=attribute:cape</code>
+            </li>
+            <li>
+              Fields (to return) (fl)
+              <br/><code class="syntax">select/?q=Superhero&fl=id,entity_id,name,attribute,score,...</code>
+            </li>
+            <li>
+              Highlighting (hl, hl.q, hl.fl)
+              <br/><code class="syntax">select/?q=Superhero&hl=true&hl.q=super&hl.fl=name,content,comments</code>
+            </li>
+          </ul>
+        </section>
+        <section>
+          <h3>Wait, I've seen many others..? Dismax/Edismax</h3>
+          <ul>
+            <li>
+              defType
+              <br/><code class="syntax">select/?q=Superhero AND evil&defType=edismax</code>
+            </li>
+            <li>
+              q.alt
+              <br/><code class="syntax">select/?q=Superhero</code>
+            </li>
+            <li>
+              qf
+              <br/><code class="syntax">select/?q=Superhero</code>
+            </li>
+            <li>
+              mm
+              <br/><code class="syntax">select/?q=Superhero</code>
+            </li>
+            <li>
+              pf
+              <br/><code class="syntax">select/?q=Superhero</code>
+            </li>
+          </ul>
+        </section>
+        <section>
+          <h3>Wait, I've seen many others..? Dismax/Edismax (2)</h3>
+          <ul>
+            <li>
+              ps
+            </li>
+            <li>
+              qs
+            </li>
+            <li>
+              bq
+            </li>
+            <li>
+              bf
+            </li>
+            <li>
+              uf
+            </li>
+          </ul>
         </section>
         <section>
           <h3>How to use Elevate.xml</h3>
@@ -158,7 +216,7 @@
         <h1 class="title">Performance &AMP; Drupal</h1>
         <section>
           <h3>Performance testing Acquia Search</h3>
-          <ul>
+          <ul class="small-text">
             <li>MergePolicies
               <ul>
                 <li>LogByteSizeMergePolicy (1.4)</li>
@@ -166,17 +224,46 @@
                 <li>TieredMergePolicy (3.x)</li>
               </ul>
             </li>
-            <li>Jmeter</li>
-            <li>Apache Access Logs</li>
-          </ul>
+            <li>Jmeter/Apache Access Logs</li>
+            <li>CentOS 5 - 2.6.18-xenU-ec2-v1.0 vs Ubuntu 10.04.4 - 2.6.32-341-ec2</li>
+           </ul>
+          <div style="float:left; width:350px" class="small-text">
+            <h3>Specifications of the Master</h3>
+            Large Instance (M1.large)<br/>
+            7.5 GB memory<br/>
+            4 EC2 Compute Units (2 virtual cores with 2 EC2 Compute Units each)<br/>
+          </div>
+          <div style="float:left; width:350px" class="small-text">
+            <h3>Specifications of the Slave</h3>
+            High-CPU Medium Instance (C1.medium)<br/>
+            1.7 GB of memory<br/>
+            5 EC2 Compute Units (2 virtual cores with 2.5 EC2 Compute Units each)<br/>
+          </div>
+          <div style="clear:both"></div>
         </section>
         <section>
           <h3>Performance Graphs (Buytaert.net)</h3>
-          <img src="images/implementation/small-speed.jpg" width="550px"/>
+            <div class="inner-graph">
+              <div id="chart_div" style="width: 800px; height: 450px;"></div>
+            </div>
         </section>
         <section>
           <h3>Performance Graphs</h3>
-          <img src="images/implementation/big-speed.jpg" width="550px"/>
+          <div class="outer">
+            <div class="inner-graph">
+              <div id="chart_div2" style="width: 800px; height: 450px;"></div>
+            </div>
+            <div data-jmpress="fade" class="inner-graph">
+              <div id="chart_div4" style="width: 800px; height: 450px;"></div>
+            </div>
+            <div data-jmpress="fade" class="inner-graph">
+              <div id="chart_div5" style="width: 800px; height: 450px;"></div>
+            </div>
+            <div data-jmpress="fade" class="inner-graph">
+              <div id="chart_div3" style="width: 800px; height: 450px;"></div>
+            </div>
+          </div>
+          <div style="clear:both"></div>
         </section>
         <section>
           <h3>Performance conclusions</h3>

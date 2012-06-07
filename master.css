@@ -110,6 +110,14 @@ h1.title {
   margin-left: -60px;
 }
 
+.inner-graph {
+  position: absolute;
+  margin-left: 0px;
+  height: 450px;
+  width: 800px;
+  background: url(images/slide_bg.png);
+}
+
 .outer {
 }
 
@@ -118,8 +126,15 @@ a:visited {text-decoration: none; color: white;}
 a:active {text-decoration: none; color: white;}
 a:hover {text-decoration: underline; color: white;}
 
+section .syntax-container {
+  text-shadow: none;
+  font-size: x-small;
+  text-align: left;
+}
 
-
-
-
-
+section code.syntax {
+  background-color: transparent;
+  text-shadow: none;
+  font-size: medium;
+  text-align: left;
+}
