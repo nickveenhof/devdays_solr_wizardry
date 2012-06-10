@@ -66,6 +66,15 @@
             <p style="clear:both;"></p>
           </div>
           <p class="small-text"><a href="http://drupal.org/user/59747" target="_blank">mh86 @ Drupal.org</a></p>
+          <ul>
+            <li>Drupal contributions including Email Field, Taxonomy Manager</li>
+            <li>Working at epiqo
+              <ul>
+                <li>Building powerful searches for job portals</li>
+                <li>Main motivation for a new Search API</li>
+              </ul>
+            </li>
+          </ul>
         </section>
         <section>
           <h3>Apache Solr</h3>
@@ -368,27 +377,204 @@ if ($resp->response) {
         </section>
       </section>
       <section id="click-recipes-search-api" data-template="rotation">
-        <h1 class="title">&nbsp;Click Recipes Search Api&nbsp;</h1>
-        <section>
-          <h3>How to add custom fields (user to node) to the node indexing</h3>
+        <h1 class="title">&nbsp;Search Api&nbsp;</h1>
+         <section>
+          <h3>About</h3>
+          <ul>
+            <li>Framework for easily creating searches</li>
+            <li>Modules provide backends (e.g. Solr) and other extensions</li>
+            <li>Heavily based on Entity API
+              <ul>
+                <li>Provides metadata</li>
+                <li>Used for index and server configurations</li>
+              </ul>
+           </li>
+          </ul>
         </section>
         <section>
-          <h3>How to boost in UI</h3>
+          <h3>Basic Structure</h3>
+          <img src="images/search_api_architecture.jpg" width="650px"/>
         </section>
         <section>
-          <h3>How to use views and Search API</h3>
+          <h3>Index any Entity</h3>
+          <ul>
+            <li>Different datasources</li>
+            <li>One datasource: entities</li>
+            <li>Based on Entity API:
+              <ul>
+                <li>Each property can be indexed</li>
+                <li>Properties of related entites can be indexed</li>
+              </ul>
+            </li>
+          </ul>
         </section>
         <section>
-          <h3>How to stop entity_load</h3>
+          <h3>How to configure your index - Fields</h3>
+          <img src="images/search_api_fields_ui.jpg" width="650px"/>
         </section>
         <section>
-          <h3>How to stop entity_load</h3>
+          <h3>Search API Views</h3>
+          <ul>
+            <li>Full Views support</li>
+            <li>Display any property of an entity</li>
+            <li>Use any indexed field as filter, argument or sort</li>
+            <li>Most code based on Entity API's views integration</li>
+            <li>By default: data retrieved via entity load
+              <ul>
+                <li>Can be bypassed ("Retrieve data from Solr" setting in server)</li>
+              </ul>
+            </li>
+            <li>Alternative: Search API pages</li>
+          </ul>
+        </section>
+        <section>
+          <h3>Extensions</h3>
+          <ul>
+            <li>Backends
+              <ul>
+                <li>Apache Solr</li>
+                <li>Database</li>
+                <li>Fuzzy Search</li>
+                <li>Xapian</li>
+                <li>...</li>
+              </ul>
+            </li>
+          </ul>
+        </section>
+        <section>
+          <h3>Extensions</h3>
+          <ul>
+            <li>Features
+              <ul>
+                <li>Search API Autocomplete</li>
+                <li>Attachments</li>
+                <li>Saved Searches</li>
+                <li>Location</li>
+                <li>Pretty Facets Paths</li>
+                <li>...</li>
+              </ul>
+            </li>
+            <li>Current dev: Search API Statistics (GSOC Project)</li>
+          </ul>
         </section>
       </section>
       <section id="code-recipes-search-api" data-template="rotation">
-        <h1 class="title">&nbsp;Code Recipes Search Api Solr&nbsp;</h1>
+        <h1 class="title">&nbsp;Code Recipes Search Api&nbsp;</h1>
         <section>
-          <h3>How to ...</h3>
+          <h3>API Overview</h3>
+          <ul>
+            <li>CRUD hooks for indexes and servers</li>
+            <li>Hooks for adding
+              <ul>
+                <li>backends</li>
+                <li>data alterations</li>
+                <li>processors</li>
+              </ul>
+            </li>
+            <li>Hook fired when indexing items</li>
+            <li>Hook fired when executing a search</li>
+          </ul>
+        </section>
+        <section>
+          <h3>Implementing a Backend - Part I</h3>
+            <pre class="syntax php-script">
+
+/**
+ * Implements hook_search_api_service_info().
+ */
+function search_api_solr_search_api_service_info() {
+  $services['search_api_solr_service'] = array(
+    'name' => t('Solr service'),
+    'class' => 'SearchApiSolrService',
+    'description' => t('Index items using an Apache Solr search server.'),
+  );
+  return $services;
+}
+
+            </pre>
+        </section>
+        <section>
+          <h3>Implementing a Backend - Part II</h3>
+            <pre class="syntax php-script">
+/**
+ * Search service class using Solr server.
+ */
+class SearchApiSolrService extends SearchApiAbstractService {
+
+  public function configurationForm(array $form, array &$form_state) {}
+
+  public function supportsFeature($feature) {}
+
+  public function addIndex(SearchApiIndex $index) {}
+
+  public function removeIndex($index) {}
+
+  public function indexItems(SearchApiIndex $index, array $items) {}
+
+  public function deleteItems($ids = 'all', SearchApiIndex $index = NULL) {}
+
+  public function search(SearchApiQueryInterface $query) {}
+
+}
+            </pre>
+        </section>
+        <section>
+          <h3>How to index custom fields</h3>
+            <pre class="syntax php-script">
+/**
+ * Implements hook_entity_property_info_alter().
+ */
+function example_entity_property_info_alter(&$info) {
+  $info['node']['properties']['example_random_number'] = array(
+    'type' => 'integer',
+    'label' => t('Random number'),
+    'computed' => TRUE,
+    'getter callback' => 'example_property_random_number_getter_callback',
+  );
+}
+
+/**
+ * Getter callback for a random number between 1 and 100.
+ */
+function example_property_random_number_getter_callback($item) {
+  return mt_rand(1, 100);
+}
+          </pre>
+        </section>
+        <section>
+          <h3>Search API Query Alter</h3>
+            <pre class="syntax php-script">
+/**
+ * Implements hook_search_api_query_alter().
+ */
+function example_search_api_query_alter(SearchApiQueryInterface $query) {
+  // @todo example
+  $info = entity_get_info($index->item_type);
+  $query->condition($info['entity keys']['id'], 0, '!=');
+}
+          </pre>
+        </section>
+        <section>
+          <h3>Search API Solr Query Alter</h3>
+            <pre class="syntax php-script">
+/**
+ * Implements hook_search_api_solr_query_alter().
+ */
+function example_search_api_solr_query_alter(array &$call_args, SearchApiQueryInterface $query) {
+  // Change the Solr request handler.
+  $call_args['params']['defType'] = 'edismax';
+
+  // Wrap search wards with wildcards for partial matches.
+  // Note: only excerpt of full code.
+  $key_array = array();
+  foreach (explode(' ', $call_args['query']) as $k) {
+    if ($k) {
+      $key_array[] = "*$k*";
+    }
+  }
+  $call_args['query'] = implode(' ', $key_array);
+}
+          </pre>
         </section>
       </section>
       <section id="future" data-template="rotation">
@@ -398,6 +584,13 @@ if ($resp->response) {
         </section>
         <section>
           <h3>Search Api Solr</h3>
+          <ul>
+            <li>Apache Solr Common Configurations</li>
+            <li>Acquia Search?</li>
+            <li>No plans Drupal 8</li>
+            <li>Various improvments and bug fixes</li>
+            <li>GSOC Project Search API Statistics</li>
+          </ul>
         </section>
         <section>
           <h3>Globally</h3>
