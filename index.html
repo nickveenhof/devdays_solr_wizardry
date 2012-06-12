@@ -94,7 +94,7 @@
         <h1 class="title">Drupal to Solr</h1>
         <section>
           <h3>How does a solr search work?</h3>
-          <div style="height:450px; overflow:auto;">
+          <div style="height:450px; overflow:scroll;">
             <img src="images/query_tale.png"/>
           </div>
         </section>
@@ -135,11 +135,11 @@ if ($resp->response) {
             <li>
               sort, start, rows
               <br/><code class="syntax">select/?q=Superhero&start=0&rows=10&sort=sort_name+asc</code>
-              <br/><span class="smaller-text">*Can sort on integers, but for strings you need to use sort_yourfield</span>
+              <br/><span class="smaller-text">Can sort on integers, but for strings you need to use sort_yourfield</span>
             </li>
             <li>
               Filter Query (fq)
-              <br/><code class="syntax">select/?q=Superhero&fq=bundle:persons&fq=attribute:cape</code>
+              <br/><code class="syntax">select/?q=Superhero&fq=bundle:person&fq=attribute:cape</code>
             </li>
             <li>
               Fields (to return) (fl)
@@ -159,65 +159,63 @@ if ($resp->response) {
               <br/><code class="syntax">select/?q=Superhero AND evil&defType=edismax</code>
             </li>
             <li>
-              q.alt
-              <br/><code class="syntax">select/?q=Superhero</code>
+              Alternative Query (q.alt)
+              <br/><code class="syntax">select/?q.alt=bundle:person</code>
+              <br/><span class="smaller-text">Can only be used if your q param is empty or not specified.</span>
             </li>
             <li>
-              qf
-              <br/><code class="syntax">select/?q=Superhero</code>
+              Query fields (qf)
+              <br/><code class="syntax">select/?q=Superhero&qf=teaser^2.0</code>
+              <br/><span class="smaller-text">Feld type boosting.</span>
             </li>
             <li>
-              mm
-              <br/><code class="syntax">select/?q=Superhero</code>
-            </li>
-            <li>
-              pf
-              <br/><code class="syntax">select/?q=Superhero</code>
-            </li>
-          </ul>
-        </section>
-        <section>
-          <h3>Wait, I've seen many others..? Dismax/Edismax (2)</h3>
-          <ul>
-            <li>
-              ps
-            </li>
-            <li>
-              qs
-            </li>
-            <li>
-              bq
-            </li>
-            <li>
-              bf
-            </li>
-            <li>
-              uf
+              Phrase Fields (pf)
+              <br/><code class="syntax">select/?q=Robin Hood&pf=name^10</code>
+              <br/><span class="smaller-text">Document type boosting.</span>
             </li>
           </ul>
         </section>
         <section>
           <h3>How to use Elevate.xml</h3>
-          Example of elevate.xml
+          <pre class="syntax php-script">
+&lt;elevate&gt;
+&lt;query text=&quot;Superman&quot;&gt;&lt;doc id=&quot;HASH/node/248813&quot; /&gt;&lt;/query&gt;
+&lt;query text=&quot;Batman&quot;&gt;&lt;doc id=&quot;Search_api?/node/248813&quot; /&gt;&lt;/query&gt;
+&lt;/elevate&gt;
+          </pre>
         </section>
         <section>
           <h3>Why are the schema and solrconfig.xml different in Search Api Solr and Apachesolr?</h3>
-          Tell about initiative
-        </section>
-        <section>
-          <h3>What are dynamic fields?</h3>
-          Explain the wildcard fields in solr and how drupal uses them
+          <img src="images/why.jpg" width="400px"/><br/>
+          <span><a href="http://drupal.org/sandbox/cpliakas/1600962">http://drupal.org/sandbox/cpliakas/1600962</a></span>
         </section>
         <section>
           <h3>How can I Debug Solr</h3>
-          Tell about admin analysis + Jetty live log + debugQuery=True, indent=true
+          <br/><code class="syntax">select/?q=Robin Hood&somecomplexthing&debugQuery=on&debug=on</code>
+          <br/><code class="syntax">select/?q=Robin Hood&somecomplexthing&indent=true</code>
+          <br/><code class="syntax">admin/analysis.jsp?highlight=on</code>
+          <br/>Jetty Console (live query log when starting with "java start.jar")
         </section>
         <section>
           <h3>How can I enable replication in Solr?</h3>
-          Tell about architecture and HA/Multi-region
+          <img src="images/replication.jpg" width="600px"/><br/>
+        </section>
+        <section>
+          <h3>How can I enable replication in Solr?</h3>
+          <pre class="syntax php-script">
+#solrcore.properties file
+enable.master=false
+enable.slave=true
+poll_time=00:02:00
+master_core_url=http:// localhost:8983/solr/MYMASTERCORE
+          </pre>
+          <span>This file or support is not yet committed to both projects,
+            but the initiative is making sure it will</span>
         </section>
         <section>
           <h3>How can I monitor my Solr?</h3>
+          <img src="images/newrelic.jpg" width="500px"/><br/>
+
           New Relic + mbeans (nagios, ...)
         </section>
       </section>
@@ -285,53 +283,50 @@ if ($resp->response) {
           </ul>
         </section>
       </section>
-      <section id="improvements" data-template="rotation">
-        <h1 class="title">This needed to be done...&nbsp;&nbsp;&nbsp;</h1>
-        <section>
-          <div class="outer">
-            <div class="inner">
-              <img src="images/apachesolr_ui_backend_september_2011_1.png" width="600px"/>
-            </div>
-            <div data-jmpress="fade" class="inner">
-              <img src="images/apachesolr_ui_backend_september_2011_2.png" width="600px"/>
-            </div>
-            <div data-jmpress="fade" class="inner">
-              <img src="images/apachesolr_ui_backend_september_2011_3.png" width="500px"/>
-            </div>
-            <div data-jmpress="fade" class="inner">
-              <img src="images/apachesolr_ui_backend_september_2011_4.png" width="450px"/>
-            </div>
-          </div>
-        </section>
-        <section>
-          <h3>Apache Solr</h3>
-          <ul>
-            <li>UI refactoring</li>
-            <li>Multi entity support</li>
-            <li>From global to context driven</li>
-            <li>Get rid of core search dependency</li>
-            <li>Performance</li>
-            <li>Access control</li>
-            <li>De-duplication of code</li>
-            <li>Automatic Testing (503 tests)</li>
-            <li>Backport to 6.x-3.x</li>
-            <li>...</li>
-          </ul>
-        </section>
-      </section>
       <section id="click-recipes-apachesolr" data-template="rotation">
-        <h1 class="title">&nbsp;Click Recipes Apachesolr&nbsp;</h1>
+        <h1 class="title">&nbsp;Recipes Apachesolr&nbsp;</h1>
         <section>
-          <h3>How to create a Range facet</h3>
+          <h3>How to create a Range/Slider facet</h3>
+          <ul>
+            <li>Facet Api</li>
+            <li>Facet Api Slider</li>
+            <li>Works for any numeric type</li>
+            <li>In the facet, manually put the query type on Numeric Range when selecting the Slider widget</li>
+          </ul>
+          <span>Add Image</span>
         </section>
         <section>
           <h3>How to index locations</h3>
+          <ul>
+            <li>Apachesolr geo, Apachesolr location</li>
+            <li>Theme your results to have maps based on those locations.</li>
+            <li>TIP: Add custom code to get nice range facets</li>
+          </ul>
         </section>
         <section>
           <h3>How to index attachments</h3>
+          <ul>
+            <li>Apachesolr Attachments</li>
+            <ul>
+              <li>Refactored</li>
+              <li>Recognized as an entity linked to the node entity</li>
+              <li>Local or remote extractions</li>
+              <li>Tip: Attachments to other entities? Easy to link them in custom code</li>
+              <li>Warning: No media support, we need help</li>
+            </ul>
+          </ul>
         </section>
         <section>
           <h3>How to have a common index between Drupal 6 and 7</h3>
+          <ul>
+            <li>Apachesolr Multisitesearch</li>
+            <ul>
+              <li>Refactored</li>
+              <li>Small module, most of it is in the core module.</li>
+              <li>7.x-1.x API and schema = 6.x-3.x API and schema, meaning easier maintenance of custom code</li>
+              <li>Tip: Theme the results so you know where they are coming from</li>
+            </ul>
+          </ul>
         </section>
         <section>
           <h3>How to theme your search results (1)</h3>
