@@ -67,8 +67,8 @@
           </div>
           <p class="small-text"><a href="http://drupal.org/user/59747" target="_blank">mh86 @ Drupal.org</a></p>
           <ul>
-            <li>Drupal contributions including Email Field, Taxonomy Manager</li>
-            <li>Working at epiqo
+            <li>Drupal contributions including Email Field and Taxonomy Manager</li>
+            <li style="margin-top: 20px">Working at epiqo
               <ul>
                 <li>Building powerful searches for job portals</li>
                 <li>Main motivation for a new Search API</li>
@@ -382,7 +382,8 @@ if ($resp->response) {
           <h3>About</h3>
           <ul>
             <li>Framework for easily creating searches</li>
-            <li>Modules provide backends (e.g. Solr) and other extensions</li>
+            <li>Abstracts from data sources and backend implementations
+            <li>Large ecosystem with extensions, e.g. backends</li>
             <li>Heavily based on Entity API
               <ul>
                 <li>Provides metadata</li>
@@ -396,7 +397,7 @@ if ($resp->response) {
           <img src="images/search_api_architecture.jpg" width="650px"/>
         </section>
         <section>
-          <h3>Index any Entity</h3>
+          <h3>Index any data</h3>
           <ul>
             <li>Different datasources</li>
             <li>One datasource: entities</li>
@@ -466,6 +467,7 @@ if ($resp->response) {
             <li>CRUD hooks for indexes and servers</li>
             <li>Hooks for adding
               <ul>
+                <li>data sources</li>
                 <li>backends</li>
                 <li>data alterations</li>
                 <li>processors</li>
@@ -585,7 +587,7 @@ function example_search_api_solr_query_alter(array &$call_args, SearchApiQueryIn
           <ul>
             <li>Apache Solr Common Configurations</li>
             <li>Acquia Search?</li>
-            <li>No plans Drupal 8</li>
+            <li>No plans Drupal 8 core</li>
             <li>Various improvments and bug fixes</li>
             <li>GSOC Project Search API Statistics</li>
           </ul>
