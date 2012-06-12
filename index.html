@@ -514,7 +514,6 @@ class SearchApiSolrService extends SearchApiAbstractService {
   public function deleteItems($ids = 'all', SearchApiIndex $index = NULL) {}
 
   public function search(SearchApiQueryInterface $query) {}
-
 }
             </pre>
         </section>
@@ -548,9 +547,10 @@ function example_property_random_number_getter_callback($item) {
  * Implements hook_search_api_query_alter().
  */
 function example_search_api_query_alter(SearchApiQueryInterface $query) {
-  // @todo example
-  $info = entity_get_info($index->item_type);
-  $query->condition($info['entity keys']['id'], 0, '!=');
+  $index = $query->getIndex();
+  if ($index->machine_name == "my_search") {
+    $query->condition('my_field', 'condition');
+  }
 }
           </pre>
         </section>
@@ -567,10 +567,8 @@ function example_search_api_solr_query_alter(array &$call_args, SearchApiQueryIn
   // Wrap search wards with wildcards for partial matches.
   // Note: only excerpt of full code.
   $key_array = array();
-  foreach (explode(' ', $call_args['query']) as $k) {
-    if ($k) {
-      $key_array[] = "*$k*";
-    }
+  foreach (explode(' ', $query->getOriginalKeys()) as $k) {
+    $key_array[] = "*$k*";
   }
   $call_args['query'] = implode(' ', $key_array);
 }
