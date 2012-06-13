@@ -94,7 +94,7 @@
         <h1 class="title">Drupal to Solr</h1>
         <section>
           <h3>How does a solr search work?</h3>
-          <div style="height:450px; overflow:scroll;">
+          <div style="height:530px; overflow:auto;">
             <img src="images/query_tale.png"/>
           </div>
         </section>
@@ -116,10 +116,6 @@ $subquery = apachesolr_drupal_subquery();
 $subquery->addFilter('hash', randomhash);
 $query->addFilterSubQuery($subquery);
 $resp = $query->search();
-
-if ($resp->response) {
-  // Do something with results
-}
             </pre>
         </section>
       </section>
@@ -207,7 +203,7 @@ if ($resp->response) {
 enable.master=false
 enable.slave=true
 poll_time=00:02:00
-master_core_url=http:// localhost:8983/solr/MYMASTERCORE
+master_core_url=http://localhost:8983/solr/MYMASTERCORE
           </pre>
           <span>This file or support is not yet committed to both projects,
             but the initiative is making sure it will</span>
@@ -497,19 +493,12 @@ function search_api_solr_search_api_service_info() {
  * Search service class using Solr server.
  */
 class SearchApiSolrService extends SearchApiAbstractService {
-
   public function configurationForm(array $form, array &$form_state) {}
-
   public function supportsFeature($feature) {}
-
   public function addIndex(SearchApiIndex $index) {}
-
   public function removeIndex($index) {}
-
   public function indexItems(SearchApiIndex $index, array $items) {}
-
   public function deleteItems($ids = 'all', SearchApiIndex $index = NULL) {}
-
   public function search(SearchApiQueryInterface $query) {}
 }
             </pre>

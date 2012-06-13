@@ -11,6 +11,10 @@ body, html {
 	pointer-events: none;
 }
 
+h3 {
+  margin-bottom: 5px;
+}
+
 article section {
   background : none;
 }
@@ -27,7 +31,7 @@ section {
 	min-height: 600px;
 
 	display: block;
-  padding: 40px 60px;
+  padding: 0px 15px;
 
 	text-align: center;
 
@@ -125,6 +129,15 @@ a:link {text-decoration: none; color: white;}
 a:visited {text-decoration: none; color: white;}
 a:active {text-decoration: none; color: white;}
 a:hover {text-decoration: underline; color: white;}
+
+.syntax-container a:link {text-decoration: none; color: black;}
+.syntax-container a:visited {text-decoration: none; color: black;}
+.syntax-container a:active {text-decoration: none; color: black;}
+.syntax-container a:hover {text-decoration: underline; color: black;}
+
+.syntax-container {
+  padding: 0;
+}
 
 section .syntax-container {
   text-shadow: none;
