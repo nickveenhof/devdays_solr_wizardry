@@ -82,8 +82,12 @@ section ul {
   text-align: left;
 }
 section li {
-  margin-bottom: 5px;
+  margin-bottom: 10px;
 }
+section li ul {
+  margin-top: 10px;
+}
+
 .active .prevsection, .active .nextsection {
 	opacity: 1;
 }
