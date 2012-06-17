@@ -171,7 +171,7 @@
         </section>
       </section>
       <section id="code-recipes-search-api" data-template="rotation">
-        <h1 class="title">&nbsp;Code Recipes Search Api&nbsp;</h1>
+        <h1 class="title">&nbsp;Search Api Recipes&nbsp;</h1>
         <section>
           <h3>API Overview</h3>
           <ul>
@@ -282,7 +282,7 @@ function example_search_api_solr_query_alter(array &$call_args, SearchApiQueryIn
         </section>
       </section>
       <section id="click-recipes-apachesolr" data-template="rotation">
-        <h1 class="title">&nbsp;Recipes Apachesolr&nbsp;</h1>
+        <h1 class="title">&nbsp;Apachesolr Recipes&nbsp;</h1>
         <section>
           <h3>Apache Solr</h3>
           <ul>
@@ -303,9 +303,10 @@ function example_search_api_solr_query_alter(array &$call_args, SearchApiQueryIn
             <li>Facet Api</li>
             <li>Facet Api Slider</li>
             <li>Works for any numeric type</li>
-            <li>In the facet, manually put the query type on Numeric Range when selecting the Slider widget</li>
+            <li>Code is pending for having date sliders</li>
+            <li>Quirk : In the facet, manually put the query type on Numeric Range when selecting the Slider widget</li>
           </ul>
-          <span>Add Image</span>
+          <img src="images/slider.jpg"/>
         </section>
         <section>
           <h3>How to index locations</h3>
@@ -324,7 +325,7 @@ function example_search_api_solr_query_alter(array &$call_args, SearchApiQueryIn
               <li>Recognized as an entity linked to the node entity</li>
               <li>Local or remote extractions</li>
               <li>Tip: Attachments to other entities? Easy to link them in custom code</li>
-              <li>Warning: No media support, we need help</li>
+              <li>Quirk: No media support, we need help! Someone? Anyone? :)</li>
             </ul>
           </ul>
         </section>
@@ -342,15 +343,18 @@ function example_search_api_solr_query_alter(array &$call_args, SearchApiQueryIn
         </section>
         <section>
           <h3>How can I reduce the http request when using thumbnails</h3>
-        </section>
-      </section>
-      <section id="drupal-to-solr" data-template="rotation">
-        <h1 class="title">Drupal to Solr</h1>
-        <section>
-          <h3>How does a solr search work?</h3>
-          <div style="height:530px; overflow:auto;">
-            <img src="images/query_tale.png"/>
-          </div>
+          <pre class="syntax php-script">
+function HOOK_apachesolr_index_document_build(ApacheSolrDocument $document, $entity, $env_id) {
+  // Warning : Simplified, you need more checks!
+  // Encode the image to base64
+  $img64 = base64_encode_image($entity->field_image['filename']);
+  // Add it to the binary dynamic index field
+  $document->setMultiValue('xm_field_img64', $img64);
+}
+function HOOK_apachesolr_query_alter(DrupalSolrQueryInterface $query) {
+  $query->addParam('fl', 'xm_field_img64');
+}
+          </pre>
         </section>
         <section>
           <h3>How can I create my own Query object?</h3>
@@ -364,11 +368,6 @@ $query->addFilter('bundle', (article OR page));
 $query->removeFilter('bundle');
 $query->addParam('fq', "bundle:(article OR page)");
 $query->addParam('fq', "field_date:[1970-12-31T23:59:59Z TO NOW]");
-// Tricky one...
-$query->removeParam('fq');
-$subquery = apachesolr_drupal_subquery();
-$subquery->addFilter('hash', randomhash);
-$query->addFilterSubQuery($subquery);
 $resp = $query->search();
             </pre>
         </section>
@@ -434,7 +433,6 @@ $resp = $query->search();
           <pre class="syntax php-script">
 &lt;elevate&gt;
 &lt;query text=&quot;Superman&quot;&gt;&lt;doc id=&quot;HASH/node/248813&quot; /&gt;&lt;/query&gt;
-&lt;query text=&quot;Batman&quot;&gt;&lt;doc id=&quot;Search_api?/node/248813&quot; /&gt;&lt;/query&gt;
 &lt;/elevate&gt;
           </pre>
         </section>
@@ -514,26 +512,17 @@ master_core_url=http://localhost:8983/solr/MYMASTERCORE
             <div class="inner-graph">
               <div id="chart_div2" style="width: 800px; height: 450px;"></div>
             </div>
-            <div data-jmpress="fade" class="inner-graph">
-              <div id="chart_div4" style="width: 800px; height: 450px;"></div>
-            </div>
-            <div data-jmpress="fade" class="inner-graph">
-              <div id="chart_div5" style="width: 800px; height: 450px;"></div>
-            </div>
-            <div data-jmpress="fade" class="inner-graph">
-              <div id="chart_div3" style="width: 800px; height: 450px;"></div>
-            </div>
           </div>
           <div style="clear:both"></div>
         </section>
         <section>
           <h3>Performance conclusions</h3>
           <ul>
-            <li data-jmpress="fade">Keep LogByteMergePolicy with factor 4</li>
-            <li data-jmpress="fade">TieredMergePolicy very interesting. Completely different</li>
-            <li data-jmpress="fade">Solr 3.5 faster than Solr 1.4.1</li>
-            <li data-jmpress="fade">Don't rely on default settings</li>
-            <li data-jmpress="fade">Set Lucene version explicitly</li>
+            <li>Keep LogByteMergePolicy with factor 4</li>
+            <li>TieredMergePolicy very interesting. Completely different</li>
+            <li>Solr 3.5 faster than Solr 1.4.1</li>
+            <li>Don't rely on default settings</li>
+            <li>Set Lucene version explicitly</li>
           </ul>
         </section>
       </section>
@@ -548,10 +537,12 @@ master_core_url=http://localhost:8983/solr/MYMASTERCORE
           <h3>Joint forces</h3>
           <ul>
             <li>Apache Solr Common Configurations</li>
-            <li>Acquia Search</li>
+            <li>Acquia Search for Search API</li>
             <li>No plans Drupal 8 core</li>
             <li>GSOC Project Search API Statistics</li>
+            <li>More geo and mapping integration</li>
             <li>Search Api with Apachesolr backend??</li>
+            <li>Ideas?</li>
           </ul>
         </section>
       </section>
